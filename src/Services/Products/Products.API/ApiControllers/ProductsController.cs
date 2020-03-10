@@ -25,5 +25,11 @@ namespace Products.API.ApiControllers
         {
             return await base.GetAsync();
         }
+
+        [AllowAnonymous]
+        public override Task<IActionResult> GetAsync(long id)
+        {
+            return base.GetAsync(id);
+        }
     }
 }

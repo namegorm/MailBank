@@ -44,7 +44,7 @@ namespace Core.API.ApiControllers
         public virtual async Task<IActionResult> PostAsync(TViewModel viewModel)
         {
             var entity = await ApplicationService.CreateAsync(viewModel);
-            return Ok(CoreResultModel.Create(HttpStatusCode.OK, data: entity));
+            return Ok(CoreResultModel.Create(HttpStatusCode.Created, data: entity));
         }
 
         [HttpPut]

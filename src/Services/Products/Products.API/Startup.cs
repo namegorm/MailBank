@@ -60,7 +60,7 @@ namespace Products.API
             {
                 options.InvalidModelStateResponseFactory = x =>
                 {
-                    var errors = string.Join('\n', x.ModelState.Values.Where(y => y.Errors.Count > 0)
+                    var errors = string.Join(';', x.ModelState.Values.Where(y => y.Errors.Count > 0)
                         .SelectMany(y => y.Errors)
                         .Select(y => y.ErrorMessage));
 
