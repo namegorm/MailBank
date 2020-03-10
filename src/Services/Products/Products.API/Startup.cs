@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Net;
+
 using Core.API.Authentication.Schemes.Handlers;
 using Core.API.Authentication.Schemes.Options;
 using Core.API.Filters;
 using Core.API.Middlewares;
 using Core.Application.Models;
+
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -54,7 +56,7 @@ namespace Products.API
                 o.UseApiBehavior = false;
             });
 
-            services.AddMvc().AddFluentValidation().ConfigureApiBehaviorOptions(options => 
+            services.AddMvc().AddFluentValidation().ConfigureApiBehaviorOptions(options =>
             {
                 options.InvalidModelStateResponseFactory = x =>
                 {
