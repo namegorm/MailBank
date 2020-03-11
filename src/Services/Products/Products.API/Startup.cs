@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Net;
+
 using Core.API.Authentication.Schemes.Handlers;
 using Core.API.Authentication.Schemes.Options;
 using Core.API.Filters;
 using Core.API.Middlewares;
 using Core.Application.Models;
+
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -22,6 +24,8 @@ using Products.Application.ViewModelValidators;
 using Products.Application.ViewModelValidators.Implementations;
 using Products.Application.ViewModelValidators.Interfaces;
 using Products.Infrastructure;
+
+using Serilog;
 
 namespace Products.API
 {
@@ -54,11 +58,11 @@ namespace Products.API
                 o.UseApiBehavior = false;
             });
 
-            services.AddMvc().AddFluentValidation().ConfigureApiBehaviorOptions(options => 
+            services.AddMvc().AddFluentValidation().ConfigureApiBehaviorOptions(options =>
             {
                 options.InvalidModelStateResponseFactory = x =>
                 {
-                    var errors = string.Join('\n', x.ModelState.Values.Where(y => y.Errors.Count > 0)
+                    var errors = string.Join(';', x.ModelState.Values.Where(y => y.Errors.Count > 0)
                         .SelectMany(y => y.Errors)
                         .Select(y => y.ErrorMessage));
 
@@ -72,6 +76,11 @@ namespace Products.API
             services.AddTransient<ISecondProductDescriptionValidator, SecondProductDescriptionValidator>();
 
             services.AddTransient<IValidator<ProductViewModel>, ProductViewModelValidator>();
+
+            services.AddLogging(builder =>
+            {
+                builder.AddSerilog();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -92,6 +101,10 @@ namespace Products.API
             {
                 endpoints.MapControllers();
             });
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
         }
     }
 }

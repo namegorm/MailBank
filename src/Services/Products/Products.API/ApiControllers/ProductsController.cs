@@ -4,6 +4,7 @@ using Core.API.ApiControllers;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Products.Application.ApplicationService.Interfaces;
 using Products.Application.ViewModels;
@@ -15,8 +16,8 @@ namespace Products.API.ApiControllers
     [Route("api/v{:apiVersion}/[controller]")]
     public class ProductsController : CoreApiController<Product, ProductViewModel, IProductsApplicationService>
     {
-        public ProductsController(IProductsApplicationService applicationService)
-            : base(applicationService)
+        public ProductsController(IProductsApplicationService applicationService, ILogger<ProductsController> logger)
+            : base(applicationService, logger)
         {
         }
 
@@ -24,6 +25,12 @@ namespace Products.API.ApiControllers
         public override async Task<IActionResult> GetAsync()
         {
             return await base.GetAsync();
+        }
+
+        [AllowAnonymous]
+        public override Task<IActionResult> GetAsync(long id)
+        {
+            return base.GetAsync(id);
         }
     }
 }

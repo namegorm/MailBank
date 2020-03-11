@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -40,7 +38,7 @@ namespace Core.API.Middlewares
                             case (int)HttpStatusCode.Unauthorized:
                                 coreResultModel = CoreResultModel.Create((HttpStatusCode)context.Response.StatusCode, "Not authorized user.");
                                 break;
-                            default: 
+                            default:
                                 coreResultModel = CoreResultModel.Create((HttpStatusCode)context.Response.StatusCode, "An error occurred during execution.");
                                 break;
                         }
