@@ -88,7 +88,7 @@ namespace Core.API.ApiControllers
                 {
                     var entity = await ApplicationService.CreateAsync(viewModel);
                     _logger.LogInformation("View model: {@ViewModel}, entity: {@Entity}", viewModel, entity);
-                    return Ok(CoreResultModel.Create(HttpStatusCode.OK, data: entity));
+                    return Ok(CoreResultModel.Create(HttpStatusCode.Created, data: entity));
                 }
                 catch (Exception e)
                 {
@@ -112,6 +112,12 @@ namespace Core.API.ApiControllers
                 {
                     var entity = await ApplicationService.UpdateAsync(viewModel);
                     _logger.LogInformation("View model: {@ViewModel}, entity: {@Entity}", viewModel, entity);
+
+                    if (entity == null)
+                    {
+                        return Ok(CoreResultModel.Create(HttpStatusCode.NotFound, data: entity));
+                    }
+
                     return Ok(CoreResultModel.Create(HttpStatusCode.OK, data: entity));
                 }
                 catch (Exception e)
@@ -136,6 +142,12 @@ namespace Core.API.ApiControllers
                 {
                     var entity = await ApplicationService.DeleteAsync(id);
                     _logger.LogInformation("Id: {Id}, entity: {@Entity}", id, entity);
+
+                    if (entity == null)
+                    {
+                        return Ok(CoreResultModel.Create(HttpStatusCode.NotFound, data: entity));
+                    }
+
                     return Ok(CoreResultModel.Create(HttpStatusCode.OK, data: entity));
                 }
                 catch (Exception e)
