@@ -14,6 +14,7 @@ namespace Products.API.ApiControllers
 {
     [ApiVersion("1.0")]
     [Route("api/v{:apiVersion}/[controller]")]
+    [Route("api/v{:apiVersion}/product")]
     public class ProductsController : CoreApiController<Product, ProductViewModel, IProductsApplicationService>
     {
         public ProductsController(IProductsApplicationService applicationService, ILogger<ProductsController> logger)
