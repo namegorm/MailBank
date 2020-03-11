@@ -25,6 +25,8 @@ using Products.Application.ViewModelValidators.Implementations;
 using Products.Application.ViewModelValidators.Interfaces;
 using Products.Infrastructure;
 
+using Serilog;
+
 namespace Products.API
 {
     public class Startup
@@ -74,6 +76,11 @@ namespace Products.API
             services.AddTransient<ISecondProductDescriptionValidator, SecondProductDescriptionValidator>();
 
             services.AddTransient<IValidator<ProductViewModel>, ProductViewModelValidator>();
+
+            services.AddLogging(builder =>
+            {
+                builder.AddSerilog();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -94,6 +101,10 @@ namespace Products.API
             {
                 endpoints.MapControllers();
             });
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
         }
     }
 }
